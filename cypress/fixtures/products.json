@@ -1,0 +1,14 @@
+{
+    "ProductOne": {
+        "product": "Red Cap",
+        "price": 10,
+        "addCart": "//button[@value='Red Cap']"
+    },
+
+    "ProductTwo": {
+        "product": "Beige Shorts",
+        "price": 19,
+        "addCart": "//button[@value='Beige Shorts']"
+    }
+
+}
