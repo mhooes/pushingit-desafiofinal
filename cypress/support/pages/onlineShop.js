@@ -1,20 +1,20 @@
 export class onlineShop {
 
-constructor() {
-    this.closeModal = '//footer//child::button[@id="closeModal"]';
-    this.shoppingCart = '#goShoppingCart'
-};
+    constructor() {
+        this.closeModal = '//footer//child::button[@id="closeModal"]';
+        this.shoppingCart = '#goShoppingCart'
+        this.addRedCap = '//button[@value="Red Cap"]';
+        this.addBeigeShorts = '//button[@value="Beige Shorts"]'
+    };
 
     addProductOne() {
-        cy.fixture('products').then(productList => {
-            cy.xpath(productList.ProductOne.addCart).click();
-        });
+        cy.xpath(this.addRedCap).click();
+
     };
 
     addProductTwo() {
-        cy.fixture('products').then(productList => {
-            cy.xpath(productList.ProductTwo.addCart).click();
-        });
+        cy.xpath(this.addBeigeShorts).click();
+
     };
 
     clickCloseModal() {
