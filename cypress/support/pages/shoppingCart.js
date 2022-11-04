@@ -1,16 +1,14 @@
 export class shoppingCart {
 
-    getNameProductOne() {
-        return cy.fixture('products').then(name => {
-            cy.get(`[name="${name.ProductOne.product}"]`);
-        });
+    getNameProduct(productName) {
+      return cy.xpath(`//*[@name="${productName}"]`);
+
     };
 
-    getNameProductTwo() {
-        return cy.fixture('products').then(name => {
-            cy.get(`[name="${name.ProductTwo.product}"]`);
-        });
-    };
+    getPriceProduct(productName) {
+        return cy.contains(productName).siblings('#productPrice');
+  
+      };
 
     showTotalPrice() {
         cy.xpath('//button[text()="Show total price"]').click();

@@ -18,16 +18,16 @@ describe('Pre Entrega', () => {
 
   //Fixtures//
   let loginCredentials
-  let prices
+  let product
 
   before('Fixtures', () => {
     cy.fixture('login').then(login => {
       loginCredentials = login;
     });
 
-    cy.fixture('products').then(precios => {
-          prices = precios;
-      });
+    cy.fixture('products').then(products => {
+      product = products;
+    });
 
   });
 
@@ -39,23 +39,19 @@ describe('Pre Entrega', () => {
     loginPage.loginClick();
   });
 
-  it('Exito al verificar calor acumulado', () => {
+  it('Exito al verificar valor acumulado', () => {
 
     homePage.clickOnlineShop();
-    onlineShopPage.addProductOne();
+    onlineShopPage.addProduct(product.ProductOne.name)
     onlineShopPage.clickCloseModal();
-    onlineShopPage.addProductTwo();
+    onlineShopPage.addProduct(product.ProductTwo.name)
     onlineShopPage.clickCloseModal();
     onlineShopPage.goTocart();
-    cartPage.getNameProductOne().should('exist').next().invoke('text').should('eq', `$${prices.ProductOne.price}`);
-    cartPage.getNameProductTwo().should('exist').next().invoke('text').should('eq', `$${prices.ProductTwo.price}`);
+    cartPage.getNameProduct(product.ProductOne.name).should('exist')
+    cartPage.getNameProduct(product.ProductTwo.name).should('exist')
+    cartPage.getPriceProduct(product.ProductOne.name).should('have.text', `$${product.ProductOne.price}`);
+    cartPage.getPriceProduct(product.ProductTwo.name).should('have.text', `$${product.ProductTwo.price}`);
     cartPage.showTotalPrice();
-    cartPage.totalPrice().should('have.text', `${prices.ProductOne.price + prices.ProductTwo.price}`)
-
-
-
-
-
-
+    cartPage.totalPrice().should('have.text', `${product.ProductOne.price + product.ProductTwo.price}`)
   })
 })

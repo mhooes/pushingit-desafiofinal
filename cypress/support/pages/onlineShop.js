@@ -3,17 +3,11 @@ export class onlineShop {
     constructor() {
         this.closeModal = '//footer//child::button[@id="closeModal"]';
         this.shoppingCart = '#goShoppingCart'
-        this.addRedCap = '//button[@value="Red Cap"]';
-        this.addBeigeShorts = '//button[@value="Beige Shorts"]'
-    };
-
-    addProductOne() {
-        cy.xpath(this.addRedCap).click();
 
     };
 
-    addProductTwo() {
-        cy.xpath(this.addBeigeShorts).click();
+    addProduct(product) {
+        cy.xpath(`//p[text()="${product}"]//following-sibling::button`).click();
 
     };
 
