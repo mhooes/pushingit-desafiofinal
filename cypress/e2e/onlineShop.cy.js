@@ -68,7 +68,8 @@ describe('Desafio Final', () => {
     checkoutPage.typeLastName(formCheckhout.lastName);
     checkoutPage.typecardNumber(formCheckhout.creditCard);
     checkoutPage.clickButtonPurchase();
-    reciptPage.checkName().should('contain', `${formCheckhout.firstName} ${formCheckhout.lastName}`);
+    //checkName(), lleva como parametro el timeout dinamico en milisegundo. 15000 = 15 segundos.
+    reciptPage.checkName(15000).should('contain', `${formCheckhout.firstName} ${formCheckhout.lastName}`);
     reciptPage. checkProduct(product.ProductOne.name).should('exist');
     reciptPage. checkProduct(product.ProductTwo.name).should('exist');
     reciptPage.checkCardNumber().should('contain', formCheckhout.creditCard);
