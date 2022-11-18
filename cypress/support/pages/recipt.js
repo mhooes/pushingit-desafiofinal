@@ -1,4 +1,5 @@
 export class recipt {
+  
     constructor() {
         this.name = '//div//p[@id="name"]'
         this.cardNumber = '//div//p[@id="creditCard"]'
@@ -6,8 +7,8 @@ export class recipt {
         this.buttonThankYou = ' //button[text()="Thank you"]'
     }
 
-    checkName() {
-        return cy.xpath(this.name, { timeout: 15000 });
+    checkName(timeout) {
+        return cy.xpath(this.name, { timeout:timeout });
     };
 
     checkProduct(product) {
