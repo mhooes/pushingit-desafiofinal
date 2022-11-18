@@ -1,4 +1,7 @@
 export class shoppingCart {
+  constructor() {
+    this.buttonCheckout = '//div//button[text()="Go to Checkout"]'
+  }
 
     getNameProduct(productName) {
       return cy.xpath(`//*[@name="${productName}"]`);
@@ -16,5 +19,10 @@ export class shoppingCart {
 
     totalPrice() {
         return cy.get('#price > b:nth-child(1)');
+    }
+
+    clickButtonCheckout(){
+      cy.xpath(this.buttonCheckout).click()
+
     }
 }

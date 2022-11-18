@@ -1,46 +1,56 @@
 /// <reference types="cypress" />
 
 //POM//
-import { register } from '../support/pages/register'
-import { login } from '../support/pages/login'
 import { home } from '../support/pages/home'
 import { onlineShop } from '../support/pages/onlineShop'
 import { shoppingCart } from '../support/pages/shoppingCart'
+import { checkout } from '../support/pages/checkout'
+import { recipt } from '../support/pages/recipt'
+const DATOS = require('../support/constants')
 
 describe('Pre Entrega', () => {
 
   //POM Const//
-  const registerPage = new register();
-  const loginPage = new login();
   const homePage = new home();
   const onlineShopPage = new onlineShop();
   const cartPage = new shoppingCart();
+  const checkoutPage = new checkout();
+  const reciptPage = new recipt();
 
   //Fixtures//
-  let loginCredentials
-  let product
+  let product, formCheckhout
 
-  before('Fixtures', () => {
-    cy.fixture('login').then(login => {
-      loginCredentials = login;
-    });
+  before('', () => {
 
     cy.fixture('products').then(products => {
       product = products;
     });
 
-  });
+    cy.fixture('checkoutForm').then(checkoutForm => {
+      formCheckhout = checkoutForm;
+    });
+   
+    cy.request({
+      method: 'POST',
+      url: 'https://pushing-it-backend.herokuapp.com/api/register',
+      body: {
+        username: DATOS.register.username,
+        password: DATOS.register.password,
+        gender: DATOS.register.gender,
+        day: DATOS.register.day,
+        month: DATOS.register.month,
+        year: DATOS.register.year
+      }
+    }).then(respuesta => {
+      expect(respuesta.status).eq(200);
+      window.localStorage.setItem('token', respuesta.body.token);
+      window.localStorage.setItem('user', respuesta.body.newUser.username);
+    })
+    cy.visit('')
 
-  beforeEach(() => {
-    cy.visit('');
-    registerPage.dblclickIniciaSesion();
-    loginPage.typeUser().type(loginCredentials.user);
-    loginPage.typePass().type(loginCredentials.pass);
-    loginPage.loginClick();
   });
 
   it('Exito al verificar valor acumulado', () => {
-
     homePage.clickOnlineShop();
     onlineShopPage.addProduct(product.ProductOne.name)
     onlineShopPage.clickCloseModal();
@@ -53,5 +63,23 @@ describe('Pre Entrega', () => {
     cartPage.getPriceProduct(product.ProductTwo.name).should('have.text', `$${product.ProductTwo.price}`);
     cartPage.showTotalPrice();
     cartPage.totalPrice().should('have.text', `${product.ProductOne.price + product.ProductTwo.price}`)
-  })
-})
+    cartPage.clickButtonCheckout();
+    checkoutPage.typeFirsName(formCheckhout.firstName);
+    checkoutPage.typeLastName(formCheckhout.lastName);
+    checkoutPage.typecardNumber(formCheckhout.creditCard);
+    checkoutPage.clickButtonPurchase();
+    reciptPage.checkName().should('contain', `${formCheckhout.firstName} ${formCheckhout.lastName}`);
+    reciptPage. checkProduct(product.ProductOne.name).should('exist');
+    reciptPage. checkProduct(product.ProductTwo.name).should('exist');
+    reciptPage.checkCardNumber().should('contain', formCheckhout.creditCard);
+    reciptPage.checkTotalPrice().should('contain', `${product.ProductOne.price + product.ProductTwo.price}`);
+    reciptPage.clickThankYouButton();
+  });
+
+  after('', () => {
+    cy.request('DELETE', 'https://pushing-it-backend.herokuapp.com/api/deleteuser/' + DATOS.register.username).then(respuesta => {
+      expect(respuesta.status).equal(200);
+    });
+  });
+
+});
