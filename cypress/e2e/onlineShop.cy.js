@@ -8,7 +8,7 @@ import { checkout } from '../support/pages/checkout'
 import { recipt } from '../support/pages/recipt'
 const DATOS = require('../support/constants')
 
-describe('Pre Entrega', () => {
+describe('Desafio Final', () => {
 
   //POM Const//
   const homePage = new home();
@@ -50,7 +50,7 @@ describe('Pre Entrega', () => {
 
   });
 
-  it('Exito al verificar valor acumulado', () => {
+  it('Exito al finalizar compra', () => {
     homePage.clickOnlineShop();
     onlineShopPage.addProduct(product.ProductOne.name)
     onlineShopPage.clickCloseModal();
