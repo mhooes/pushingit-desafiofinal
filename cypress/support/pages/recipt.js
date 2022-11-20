@@ -7,8 +7,12 @@ export class recipt {
         this.buttonThankYou = ' //button[text()="Thank you"]'
     }
 
-    checkName(timeout) {
-        return cy.xpath(this.name, { timeout:timeout });
+    progressBarDisappear() {
+        return cy.get('[role="progressbar"]', {timeout:15000})
+    }
+
+    checkName() {
+        return cy.xpath(this.name);
     };
 
     checkProduct(product) {
